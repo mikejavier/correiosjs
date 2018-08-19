@@ -1,0 +1,39 @@
+{
+  "name": "correiosjs",
+  "version": "1.0.0",
+  "description": "Javascript wrapper for the Correios API using WDSL",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "debug": "babel-node debug.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mikejavier/correiosjs.git"
+  },
+  "keywords": [
+    "correios",
+    "correios-api",
+    "correios-node",
+    "correios-javascript"
+  ],
+  "author": "Michael Santillán",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikejavier/correiosjs/issues"
+  },
+  "homepage": "https://github.com/mikejavier/correiosjs#readme",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "soap": "^0.24.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^23.4.2",
+    "jest": "^23.5.0",
+    "regenerator-runtime": "^0.12.1"
+  },
+  "jest": {
+    "timers": "6000"
+  }
+}
