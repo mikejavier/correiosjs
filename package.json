@@ -30,10 +30,13 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-jest": "^23.4.2",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "jest": "^23.5.0",
     "regenerator-runtime": "^0.12.1"
   },
   "jest": {
-    "timers": "6000"
+    "timers": "10000"
   }
 }
