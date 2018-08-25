@@ -1,13 +1,13 @@
-import getListServices from '../src/main';
+/* eslint-disable */
+import getServicesList from '../src/main';
+import fetchServicesList from '../src/correios';
 
-describe('getListServices', () => {
+jest.mock('../src/correios');
 
-  test('check if getListServices has cServicosCalculo property', () => {
-    expect.assertions(1);
-
-    return getListServices()
-      .then((data) => {
-        expect(data).toHaveProperty('ListaServicosResult.ServicosCalculo.cServicosCalculo');
-      });
+describe('getServicesList', () => {
+  test('check if fetchServicesList is called', () => {
+    expect.hasAssertions();
+    getServicesList();
+    expect(fetchServicesList.mock.calls.length).toBe(1);
   });
 });

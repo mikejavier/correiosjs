@@ -1,11 +1,5 @@
-import correiosSoapClient from './utils';
+import fetchServicesList from './correios';
 
-const getListServices = () => new Promise((resolve, reject) => {
-  correiosSoapClient()
-    .then(client => client.ListaServicos(null, (err, result) => {
-      if (err) reject(err);
-      resolve(result);
-    }));
-});
+const getServicesList = () => fetchServicesList();
 
-export default getListServices;
+export default getServicesList;
