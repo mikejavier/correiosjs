@@ -9,7 +9,7 @@ function getSoapClient() {
   });
 }
 
-function fetchServicesList() {
+export function fetchServicesList() {
   return getSoapClient()
     .then(client => client.ListaServicos(null, (err, result) => {
       if (err) return err;
@@ -17,4 +17,6 @@ function fetchServicesList() {
     }));
 }
 
-export default fetchServicesList;
+export function fetchDeliveryTime(params) {
+  return params;
+}

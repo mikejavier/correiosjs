@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "npm test -- --watch",
     "debug": "babel-node debug.js"
   },
   "repository": {

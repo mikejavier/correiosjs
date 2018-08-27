@@ -1,5 +1,7 @@
-import fetchServicesList from './correios';
+import { fetchServicesList, fetchDeliveryTime } from './correios';
 
-const getServicesList = () => fetchServicesList();
+export const getServicesList = () => fetchServicesList();
 
-export default getServicesList;
+export const getDeliveryTime = () => fetchDeliveryTime();
+
+export const getDeliveryPrice = () => true;
