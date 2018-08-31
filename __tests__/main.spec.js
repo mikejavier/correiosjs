@@ -13,18 +13,26 @@ describe('getServicesList', () => {
 });
 
 describe('getDeliveryTime', () => {
-  test('getDeliveryTime is called with argument', () => {
-    // getDeliveryTime({
-    //   destinyZipCode: 'fjkdnfjkdn',
-    //   originZipCode: 'fjkdnfjkdn',
-    //   serviceCode: 'fjkdnfjkdn'
-    // });
-    // expect(fetchDeliveryTime.mock.calls[0][0]).toMatchObject({
-    //   serviceCode: expect.any(String),
-    //   originZipCode: expect.any(String),
-    //   destinyZipCode: expect.any(String)
-    // });
-    expect(getDeliveryTime()).rejects.toEqual({ error: 'missing argument' });
+  fetchDeliveryTime.mockResolvedValue(true);
+  
+  test('getDeliveryTime is called without argument', () => {
+    expect(getDeliveryTime())
+      .rejects.toEqual({ error: 'incorrect parameter' });
+  });
+
+  test('getDeliveryTime is called with argument has two properties', () => {
+    expect(getDeliveryTime({ teste: 1, teste: 1}))
+      .rejects.toEqual({ error: 'incorrect parameter' });
+  });
+
+  test('getDeliveryTime is called with argument has three incorrect properties', () => {
+    expect(getDeliveryTime({ teste: 1, teste: 1, teste: 1 }))
+      .rejects.toEqual({ error: 'incorrect parameter' });
+  });
+
+  test('getDeliveryTime is called with argument has three correct properties', () => {
+    expect(getDeliveryTime({ destinyZipCode: 1, serviceCode: 1, originZipCode: 1 }))
+      .resolves.toBeTruthy();
   });
 });
 
