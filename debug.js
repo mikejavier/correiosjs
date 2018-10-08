@@ -1,8 +1,5 @@
-import correiosSoapClient from './src/utils';
+import { getServicesList } from './src/main';
 
-
-correiosSoapClient()
-  .then(client => client.ListaServicos(null, (err, result) => {
-    if (err) console.log(err);
-    console.log(JSON.stringify(result));
-  }));
+getServicesList()
+  .then(res => console.log(res))
+  .catch(err => console.log(err));

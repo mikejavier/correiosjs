@@ -1,19 +1,32 @@
-import { fetchServicesList, fetchDeliveryTime } from './correios';
+import soap from 'soap';
 
-export const getServicesList = () => fetchServicesList();
+const CORREIOS_API_URL = 'http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?wsdl';
 
-export const getDeliveryTime = (params = {}) => new Promise((resolve, reject) => {
-  const properties = ['serviceCode', 'originZipCode', 'destinyZipCode'];
-  const paramsArray = Object.keys(params);
-  const errorMesage = {
-    error: 'incorrect parameter',
-  };
+let soapClient = null;
 
-  if (paramsArray.length < 3) return reject(errorMesage);
+function correiosServices() {
+  return new Promise(async (resolve, reject) => {
+    if (soapClient) return resolve(soapClient);
 
-  if (!paramsArray.every(element => properties.includes(element))) return reject(errorMesage);
+    try {
+      soapClient = await soap.createClientAsync(CORREIOS_API_URL);
+      return resolve(soapClient);
+    } catch (e) {
+      return reject(e);
+    }
+  });
+}
 
-  return resolve(fetchDeliveryTime());
+export const getServicesList = () => new Promise(async (resolve, reject) => {
+  try {
+    const { ListaServicos } = await correiosServices();
+
+    ListaServicos(null, (err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    });
+  } catch (e) {
+    reject(e);
+  }
 });
 
-export const getDeliveryPrice = () => true;
