@@ -35,11 +35,51 @@ export const getServices = () => new Promise(async (resolve, reject) => {
 export const getStarServices = () => new Promise(async (resolve, reject) => {
   try {
     const { ListaServicosSTAR } = await correiosServices();
+
     ListaServicosSTAR(null, (err, result) => {
       if (err) return reject(err);
       return resolve(result);
     });
   } catch (e) {
     reject(e);
+  }
+});
+
+// Calcula o prazo considerando restrição de entrega, com uma data especificada ou a data atual
+export const deliveryTime = (params = {}) => new Promise(async (resolve, reject) => {
+  const properties = ['service', 'origin', 'destiny', 'restriction', 'from'];
+  const paramsProperties = Object.keys(params);
+  const errorMesage = {
+    error: 'incorrect parameter',
+  };
+
+  if (paramsProperties.length < 3) return reject(errorMesage);
+  if (!paramsProperties.every(element => properties.includes(element))) return reject(errorMesage);
+
+  const payload = {
+    nCdServico: params.service,
+    sCepOrigem: params.origin,
+    sCepDestino: params.destiny,
+    sDtCalculo: '',
+  };
+
+  if (params.from) payload.sDtCalculo = params.from;
+
+  try {
+    const { CalcPrazoData, CalcPrazoRestricao } = await correiosServices();
+
+    if (params.restriction === true) {
+      return CalcPrazoRestricao(payload, (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      });
+    }
+
+    return CalcPrazoData(payload, (err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    });
+  } catch (e) {
+    return reject(e);
   }
 });
