@@ -17,7 +17,8 @@ function correiosServices() {
   });
 }
 
-export const getServicesList = () => new Promise(async (resolve, reject) => {
+// Lista os serviços que estão disponíveis para cálculo de preço e / ou prazo
+export const getServices = () => new Promise(async (resolve, reject) => {
   try {
     const { ListaServicos } = await correiosServices();
 
@@ -30,3 +31,15 @@ export const getServicesList = () => new Promise(async (resolve, reject) => {
   }
 });
 
+// Lista os serviços que são calculados pelo STAR
+export const getStarServices = () => new Promise(async (resolve, reject) => {
+  try {
+    const { ListaServicosSTAR } = await correiosServices();
+    ListaServicosSTAR(null, (err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    });
+  } catch (e) {
+    reject(e);
+  }
+});

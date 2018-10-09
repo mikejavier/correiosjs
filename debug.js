@@ -1,5 +1,9 @@
-import { getServicesList } from './src/main';
+import { getServices, getStarServices } from './src/main';
 
-getServicesList()
-  .then(res => console.log(res))
+getServices()
+  .then(res => console.log(JSON.stringify(res)))
+  .catch(err => console.log(err));
+
+getStarServices()
+  .then(res => console.log(JSON.stringify(res)))
   .catch(err => console.log(err));
