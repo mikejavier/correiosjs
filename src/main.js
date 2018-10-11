@@ -87,7 +87,7 @@ export const deliveryTime = (params = {}) => new Promise(async (resolve, reject)
 
 // Calcula somente o preço com a data atual
 export const calculatePrice = (params = {}) => new Promise(async (resolve, reject) => {
-  const properties = ['service', 'origin', 'destiny', 'weight', 'format', 'length', 'height', 'width', 'diameter', 'ownHand', 'declaredValue', 'receivingNotice'];
+  const properties = ['service', 'origin', 'destiny', 'weight', 'format', 'length', 'height', 'width', 'diameter', 'ownHand', 'declaredValue', 'receivingNotice', 'from'];
   const paramsProperties = Object.keys(params);
   const errorMesage = {
     error: 'incorrect parameter',
@@ -113,8 +113,17 @@ export const calculatePrice = (params = {}) => new Promise(async (resolve, rejec
     sCdAvisoRecebimento: params.receivingNotice,
   };
 
+  if (params.from) payload.sDtCalculo = params.from;
+
   try {
-    const { CalcPreco } = await correiosServices();
+    const { CalcPreco, CalcPrecoData } = await correiosServices();
+
+    if (payload.sDtCalculo) {
+      return CalcPrecoData(payload, (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      });
+    }
 
     return CalcPreco(payload, (err, result) => {
       if (err) return reject(err);
