@@ -92,7 +92,7 @@ export const deliveryTime = (params = {}) => new Promise(async (resolve, reject)
 });
 
 
-// Calcula somente o preço com a data atual
+// Calcula somente o preço com uma data especificada ou a data atual
 export const calculatePrice = (params = {}) => new Promise(async (resolve, reject) => {
   const properties = ['service', 'origin', 'destiny', 'weight', 'format', 'length', 'height', 'width', 'diameter', 'ownHand', 'declaredValue', 'receivingNotice', 'from'];
   const paramsProperties = Object.keys(params);
@@ -141,9 +141,25 @@ export const calculatePrice = (params = {}) => new Promise(async (resolve, rejec
   }
 });
 
-// Calcula o preço e o prazo com a data atual
+// Calcula o preço e o prazo considerando restrição de entrega,
+// com uma data especificada ou a data atual
 export const calculatePriceTime = (params = {}) => new Promise(async (resolve, reject) => {
-  const properties = ['service', 'origin', 'destiny', 'weight', 'format', 'length', 'height', 'width', 'diameter', 'ownHand', 'declaredValue', 'receivingNotice', 'from', 'restriction'];
+  const properties = [
+    'service',
+    'origin',
+    'destiny',
+    'weight',
+    'format',
+    'length',
+    'height',
+    'width',
+    'diameter',
+    'ownHand',
+    'declaredValue',
+    'receivingNotice',
+    'from',
+    'restriction',
+  ];
   const paramsProperties = Object.keys(params);
   const errorMesage = {
     error: 'incorrect parameter',
