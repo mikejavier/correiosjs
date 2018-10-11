@@ -124,3 +124,63 @@ export const calculatePrice = (params = {}) => new Promise(async (resolve, rejec
     return reject(e);
   }
 });
+
+// Calcula o preço e o prazo com a data atual
+export const calculatePriceTime = (params = {}) => new Promise(async (resolve, reject) => {
+  const properties = ['service', 'origin', 'destiny', 'weight', 'format', 'length', 'height', 'width', 'diameter', 'ownHand', 'declaredValue', 'receivingNotice', 'from', 'restriction'];
+  const paramsProperties = Object.keys(params);
+  const errorMesage = {
+    error: 'incorrect parameter',
+  };
+
+  if (paramsProperties.length < 12) return reject(errorMesage);
+  if (!paramsProperties.every(element => properties.includes(element))) return reject(errorMesage);
+
+  const payload = {
+    nCdEmpresa: null,
+    sDsSenha: null,
+    nCdServico: params.service,
+    sCepOrigem: params.origin,
+    sCepDestino: params.destiny,
+    nVlPeso: params.weight,
+    nCdFormato: params.format,
+    nVlComprimento: params.length,
+    nVlAltura: params.height,
+    nVlLargura: params.width,
+    nVlDiametro: params.diameter,
+    sCdMaoPropria: params.ownHand,
+    nVlValorDeclarado: params.declaredValue,
+    sCdAvisoRecebimento: params.receivingNotice,
+  };
+
+  if (params.from) payload.sDtCalculo = params.from;
+
+  try {
+    const {
+      CalcPrecoPrazo,
+      CalcPrecoPrazoData,
+      CalcPrecoPrazoRestricao,
+    } = await correiosServices();
+
+    if (params.restriction === true) {
+      return CalcPrecoPrazoRestricao(payload, (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      });
+    }
+
+    if (payload.sDtCalculo) {
+      return CalcPrecoPrazoData(payload, (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      });
+    }
+
+    return CalcPrecoPrazo(payload, (err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    });
+  } catch (e) {
+    return reject(e);
+  }
+});
