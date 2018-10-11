@@ -66,7 +66,7 @@ export const deliveryTime = (params = {}) => new Promise(async (resolve, reject)
   if (params.from) payload.sDtCalculo = params.from;
 
   try {
-    const { CalcPrazoData, CalcPrazoRestricao } = await correiosServices();
+    const { CalcPrazo, CalcPrazoData, CalcPrazoRestricao } = await correiosServices();
 
     if (params.restriction === true) {
       return CalcPrazoRestricao(payload, (err, result) => {
@@ -75,7 +75,14 @@ export const deliveryTime = (params = {}) => new Promise(async (resolve, reject)
       });
     }
 
-    return CalcPrazoData(payload, (err, result) => {
+    if (payload.sDtCalculo) {
+      return CalcPrazoData(payload, (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      });
+    }
+
+    return CalcPrazo(payload, (err, result) => {
       if (err) return reject(err);
       return resolve(result);
     });
